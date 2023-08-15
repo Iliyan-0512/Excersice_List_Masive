@@ -1,39 +1,43 @@
 ﻿using System;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
-namespace DateTimeDemo
+namespace CounterStrike
 {
     class Program
     {
         static void Main(string[] args)
         {
-            int arr = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
-            double average = 0;
+            double energy = double.Parse(Console.ReadLine()); // int can also be used
+            int wins = 0;
 
-            if (arr.Count == 0)
+            string command = Console.ReadLine();
+
+            while (command != "End of battle")
             {
-                Console.WriteLine("No");
-                return;
+
+                double distance = double.Parse(command);
+
+                if (energy < distance)
+                {
+                    Console.WriteLine($"Not enough energy! Game ends with {wins} won battles and {energy} energy");
+                    // Before exiting the loop, energy must be subtracted otherwise can enter winning validation
+                    energy -= distance;
+                    break;
+                }
+
+                energy -= distance;
+                wins++;
+
+                if (wins % 3 == 0)
+                {
+                    energy += wins;
+                }
+
+                command = Console.ReadLine();
             }
 
-            average = arr.Sum() / (double)arr.Count();
-            var matchingNumbersCount = arr.Where(x => x > average).ToArray().Count();
-
-            if (matchingNumbersCount == 0)
+            if (energy >= 0) // energy needs to be larger or equal to 0
             {
-                Console.WriteLine("No");
-            }
-            else if (arr.Count < 5)
-            {
-                Console.WriteLine("Less than 5 numbers");
-            }
-
-            else
-            {
-                var result = arr.OrderByDescending(x => x).Where(x => x > average).Take(5).ToArray();
-
-                Console.WriteLine(string.Join(" ", result));
+                Console.WriteLine($"Won battles: {wins}. Energy left: {energy}");
             }
 
         }
