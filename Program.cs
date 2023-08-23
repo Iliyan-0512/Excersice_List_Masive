@@ -1,44 +1,53 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CounterStrike
+namespace Guinea_Pig
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
-            double energy = double.Parse(Console.ReadLine()); // int can also be used
-            int wins = 0;
+            double quantityFood = double.Parse(Console.ReadLine()) * 1000;
+            double quantityHay = double.Parse(Console.ReadLine()) * 1000;
+            double quantityCover = double.Parse(Console.ReadLine()) * 1000;
+            double guineaWeight = double.Parse(Console.ReadLine()) * 1000;
+            // convert kilogram in gram
 
-            string command = Console.ReadLine();
+            // I found better way
+            //double convertQuantityFoodGram = quantityFood * 1000;
+            //double convertQuantityHayGram = quantityFood * 1000;
+            //double convertQuantityCoverGram = quantityFood * 1000;
+            //double convertGuineaWeightGram = quantityFood * 1000;
 
-            while (command != "End of battle")
+            for (int days = 1; days <= 30; days++)
             {
-
-                double distance = double.Parse(command);
-
-                if (energy < distance)
+                if (quantityCover <= 0 || quantityHay <= 0 || quantityFood <= 0)
                 {
-                    Console.WriteLine($"Not enough energy! Game ends with {wins} won battles and {energy} energy");
-                    // Before exiting the loop, energy must be subtracted otherwise can enter winning validation
-                    energy -= distance;
-                    break;
+                    Console.WriteLine("Merry must go to the pet store!");
+                    return;
+                }
+                quantityFood -= 300;
+                if (days % 3 == 0)
+                {
+                    double quantityCoverRent = (guineaWeight / 3);
+                    quantityCover -= quantityCoverRent;
                 }
 
-                energy -= distance;
-                wins++;
-
-                if (wins % 3 == 0)
+                if (days % 2 == 0)
                 {
-                    energy += wins;
+                    quantityHay -= quantityFood * 0.05;
+
                 }
 
-                command = Console.ReadLine();
             }
+            Console.WriteLine($"Everything is fine! Puppy is happy! Food: {quantityFood / 1000:F2}, Hay: {quantityHay / 1000:F2}, Cover: {quantityCover / 1000:F2}.");
+            //Console.ReadKey();
 
-            if (energy >= 0) // energy needs to be larger or equal to 0
-            {
-                Console.WriteLine($"Won battles: {wins}. Energy left: {energy}");
-            }
+
+
 
         }
     }
